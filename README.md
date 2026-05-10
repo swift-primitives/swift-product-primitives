@@ -134,6 +134,12 @@ Dependencies: `swift-comparison-primitives`, `swift-equation-primitives`, `swift
 
 ---
 
+## Community
+
+<!-- BEGIN: discussion -->
+Discuss this package: [swift-institute/discussions/20](https://github.com/orgs/swift-institute/discussions/20)
+<!-- END: discussion -->
+
 ## License
 
 Apache 2.0. See [LICENSE.md](LICENSE.md).
