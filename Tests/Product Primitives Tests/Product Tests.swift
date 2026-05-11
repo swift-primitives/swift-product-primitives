@@ -20,6 +20,7 @@ struct `Product Tests` {
     @Suite struct Swap {}
     @Suite struct Codable {}
     @Suite struct InstitutePrimitives {}
+    @Suite struct BitwiseCopyableConformance {}
 }
 
 // MARK: - Construction
@@ -327,5 +328,41 @@ extension `Product Tests`.InstitutePrimitives {
         let b = Product(1, 3, 0)
         #expect(less(a, b))
         #expect(!less(b, a))
+    }
+}
+
+// MARK: - BitwiseCopyable
+
+extension `Product Tests`.BitwiseCopyableConformance {
+
+    /// Static witness: parameter-pack conditional conformance fires for
+    /// all-BitwiseCopyable element packs.
+    @Test
+    func `Product is BitwiseCopyable when each element is BitwiseCopyable`() {
+        func requires<T: BitwiseCopyable>(_: T.Type) {}
+        requires(Product<Int>.self)
+        requires(Product<Int, Int>.self)
+        requires(Product<Int, Int, Int>.self)
+        requires(Product<Int, Double, Bool>.self)
+    }
+
+    /// Layout parity with the underlying tuple: BitwiseCopyable is sound
+    /// only if Product has no extra storage beyond `values`.
+    @Test
+    func `MemoryLayout matches the underlying tuple`() {
+        #expect(MemoryLayout<Product<Int, Int, Int>>.size == MemoryLayout<(Int, Int, Int)>.size)
+        #expect(MemoryLayout<Product<Int, Int, Int>>.stride == MemoryLayout<(Int, Int, Int)>.stride)
+        #expect(MemoryLayout<Product<Int, Double, Bool>>.size == MemoryLayout<(Int, Double, Bool)>.size)
+        #expect(MemoryLayout<Product<Int>>.size == MemoryLayout<Int>.size)
+    }
+
+    /// Smoke test: an `InlineArray` of `Product` requires `BitwiseCopyable`,
+    /// so this only typechecks if the conformance fires.
+    @Test
+    func `InlineArray of Product is constructible`() {
+        let triple = Product(1, 2, 3)
+        let array: InlineArray<4, Product<Int, Int, Int>> = .init(repeating: triple)
+        #expect(array[0].0 == 1)
+        #expect(array[3].2 == 3)
     }
 }

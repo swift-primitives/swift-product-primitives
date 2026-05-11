@@ -24,6 +24,14 @@
       "status": "DECISION",
       "tier": 1,
       "scope": "package"
+    },
+    {
+      "file": "future-directions.md",
+      "displayName": "Forward Directions: Type-Theory Totality and Swift-Evolution Forward-Pass",
+      "topic": "future directions",
+      "status": "RECOMMENDATION",
+      "tier": 2,
+      "scope": "cross-package"
     }
   ]
 }
