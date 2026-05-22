@@ -1,5 +1,4 @@
-import Comparison_Primitives_Core
-import Comparison_Primitives_Standard_Library_Integration
+import Comparison_Primitives
 import Equation_Primitives
 import Equation_Primitives_Standard_Library_Integration
 import Hash_Primitives_Core
