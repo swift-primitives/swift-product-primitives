@@ -12,8 +12,9 @@ extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
     /// Feeds each component into the given hasher in pack order.
     ///
     /// On Swift <6.4 this provides the borrowing-self `hash(into:)` for the
-    /// institute fork; on Swift 6.4+ it provides the stdlib `Hashable`
-    /// conformance directly via the SE-0499 typealias.
+    /// institute fork. On Swift 6.4+ it is the `hash(into:)` witness for the
+    /// explicit `Swift.Hashable` conformance below (the typed `hashValue` is
+    /// defaulted in hash-primitives).
     @inlinable
     @_disfavoredOverload
     public borrowing func hash(into hasher: inout Hasher) {
@@ -23,3 +24,11 @@ extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
         repeat combine(each values, into: &hasher)
     }
 }
+
+// Swift 6.4+: `Hash.Protocol` REFINES `Swift.Hashable`; a conditional conformance to it
+// does not synthesize the inherited `Swift.Hashable`, so declare it explicitly. The
+// `hash(into:)` witness above satisfies it. `Equatable` comes from the sibling
+// `Equation.Protocol` conformance. Ref: Research/se-0499-…md Addendum (2026-06-01).
+#if swift(>=6.4)
+extension Product: Swift.Hashable where repeat each Element: Hash.`Protocol` {}
+#endif
