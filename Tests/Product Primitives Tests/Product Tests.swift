@@ -10,6 +10,13 @@ import Testing
 
 @Suite
 struct `Product Tests` {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+    @Suite(.serialized) struct Performance {}
+}
+
+extension `Product Tests`.Unit {
     @Suite struct Construction {}
     @Suite struct Conformances {}
     @Suite struct Map {}
@@ -18,13 +25,13 @@ struct `Product Tests` {
     @Suite struct Fold {}
     @Suite struct Swap {}
     @Suite struct Codable {}
-    @Suite struct InstitutePrimitives {}
-    @Suite struct BitwiseCopyableConformance {}
+    @Suite struct Institute {}
+    @Suite struct Bitwise {}
 }
 
 // MARK: - Construction
 
-extension `Product Tests`.Construction {
+extension `Product Tests`.Unit.Construction {
 
     @Test
     func `init holds component values`() {
@@ -44,7 +51,7 @@ extension `Product Tests`.Construction {
 
 // MARK: - Conformances
 
-extension `Product Tests`.Conformances {
+extension `Product Tests`.Unit.Conformances {
 
     @Test
     func `equatable compares all components`() {
@@ -99,7 +106,7 @@ extension `Product Tests`.Conformances {
 
 // MARK: - Map (n-ary instance)
 
-extension `Product Tests`.Map {
+extension `Product Tests`.Unit.Map {
 
     @Test
     func `map transforms every component preserving arity`() {
@@ -163,7 +170,7 @@ extension `Product Tests`.Map {
 
 // MARK: - Append / Prepend
 
-extension `Product Tests`.Append {
+extension `Product Tests`.Unit.Append {
 
     @Test
     func `append extends the pack on the right`() {
@@ -194,7 +201,7 @@ extension `Product Tests`.Append {
 
 // MARK: - Zip
 
-extension `Product Tests`.Zip {
+extension `Product Tests`.Unit.Zip {
 
     @Test
     func `zip pairs corresponding components`() {
@@ -223,7 +230,7 @@ extension `Product Tests`.Zip {
 
 // MARK: - Fold
 
-extension `Product Tests`.Fold {
+extension `Product Tests`.Unit.Fold {
 
     @Test
     func `fold collapses components via closure`() {
@@ -257,7 +264,7 @@ extension `Product Tests`.Fold {
 
 // MARK: - Swap
 
-extension `Product Tests`.Swap {
+extension `Product Tests`.Unit.Swap {
 
     @Test
     func `swapped reverses a binary product`() {
@@ -278,7 +285,7 @@ extension `Product Tests`.Swap {
 
 // MARK: - Codable
 
-extension `Product Tests`.Codable {
+extension `Product Tests`.Unit.Codable {
 
     /// Compile-time conformance witnesses for Product Codable conformance.
     ///
@@ -296,7 +303,7 @@ extension `Product Tests`.Codable {
 
 // MARK: - Institute Primitive Protocols (Equation / Hash / Comparison)
 
-extension `Product Tests`.InstitutePrimitives {
+extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Equation_Protocol when each element does`() {
@@ -332,7 +339,7 @@ extension `Product Tests`.InstitutePrimitives {
 
 // MARK: - BitwiseCopyable
 
-extension `Product Tests`.BitwiseCopyableConformance {
+extension `Product Tests`.Unit.Bitwise {
 
     /// Static witness: parameter-pack conditional conformance fires for
     /// all-BitwiseCopyable element packs.
