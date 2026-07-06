@@ -1,20 +1,31 @@
 // Product+Hash.Protocol.swift
-// Conformance of Product to Hash.Protocol — unconditional.
+// Conformance of Product to Hash.Protocol.
 //
 // On Swift <6.4, `Hash.Protocol` is the institute fork supporting
-// `borrowing self`. On Swift 6.4+, it is a typealias to `Swift.Hashable`
-// per SE-0499 — this same extension then satisfies the stdlib conformance
-// directly. The stdlib `Product: Hashable` extension in
-// `Product+Hashable.swift` is therefore guarded `#if swift(<6.4)` to avoid
-// duplicate-conformance.
+// `borrowing self`; it refines `Equation.Protocol`, NOT `Swift.Hashable`,
+// so this extension carries the borrowing `hash(into:)` witness and is
+// constrained on `Hash.Protocol` elements (the stdlib-integration module
+// provides `Int: Hash.Protocol` etc. on <6.4).
+//
+// On Swift 6.4+, `Hash.Protocol` REFINES `Swift.Hashable` (re-declaring a
+// typed `hashValue: Hash.Value`, defaulted in hash-primitives). Two things
+// changed upstream that force a different shape here:
+//   1. A conditional conformance to a refining protocol no longer implies the
+//      refined (`Swift.Hashable`) conformance — that is declared separately in
+//      `Product+Hashable.swift`.
+//   2. `Hash Primitives Standard Library Integration` gates its scalar
+//      conformances (`Int: Hash.Protocol`, …) to `#if swift(<6.4)`, so on 6.4
+//      stdlib scalars satisfy `Swift.Hashable` but NOT `Hash.Protocol`.
+// Constraining this conformance on `each Element: Swift.Hashable` (rather than
+// `Hash.Protocol`) therefore keeps `Product<Int, String, …>` a `Hash.Protocol`
+// conformer on 6.4 exactly as it was on 6.3 — preserving source compatibility.
+// It is sound because on 6.4 `Hash.Protocol` adds only the defaulted
+// `hashValue: Hash.Value` over `Swift.Hashable`; the `hash(into:)` witness is
+// inherited from the `Swift.Hashable` conformance in `Product+Hashable.swift`.
 
+#if swift(<6.4)
 extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
     /// Feeds each component into the given hasher in pack order.
-    ///
-    /// On Swift <6.4 this provides the borrowing-self `hash(into:)` for the
-    /// institute fork. On Swift 6.4+ it is the `hash(into:)` witness for the
-    /// explicit `Swift.Hashable` conformance below (the typed `hashValue` is
-    /// defaulted in hash-primitives).
     @inlinable
     @_disfavoredOverload
     public borrowing func hash(into hasher: inout Hasher) {
@@ -24,11 +35,6 @@ extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
         repeat combine(each values, into: &hasher)
     }
 }
-
-// Swift 6.4+: `Hash.Protocol` REFINES `Swift.Hashable`; a conditional conformance to it
-// does not synthesize the inherited `Swift.Hashable`, so declare it explicitly. The
-// `hash(into:)` witness above satisfies it. `Equatable` comes from the sibling
-// `Equation.Protocol` conformance. Ref: Research/se-0499-…md Addendum (2026-06-01).
-#if swift(>=6.4)
-extension Product: Swift.Hashable where repeat each Element: Hash.`Protocol` {}
+#else
+extension Product: Hash.`Protocol` where repeat each Element: Swift.Hashable {}
 #endif
