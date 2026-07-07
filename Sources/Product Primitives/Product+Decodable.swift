@@ -14,5 +14,5 @@
             self.init(repeat try container.decode((each Element).self))
         }
     }
-    // swiftlint:enable no_any_protocol_existential
+// swiftlint:enable no_any_protocol_existential
 #endif

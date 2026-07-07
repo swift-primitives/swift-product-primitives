@@ -24,17 +24,17 @@
 // inherited from the `Swift.Hashable` conformance in `Product+Hashable.swift`.
 
 #if swift(<6.4)
-extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
-    /// Feeds each component into the given hasher in pack order.
-    @inlinable
-    @_disfavoredOverload
-    public borrowing func hash(into hasher: inout Hasher) {
-        func combine<T: Hash.`Protocol`>(_ x: borrowing T, into hasher: inout Hasher) {
-            x.hash(into: &hasher)
+    extension Product: Hash.`Protocol` where repeat each Element: Hash.`Protocol` {
+        /// Feeds each component into the given hasher in pack order.
+        @inlinable
+        @_disfavoredOverload
+        public borrowing func hash(into hasher: inout Hasher) {
+            func combine<T: Hash.`Protocol`>(_ x: borrowing T, into hasher: inout Hasher) {
+                x.hash(into: &hasher)
+            }
+            repeat combine(each values, into: &hasher)
         }
-        repeat combine(each values, into: &hasher)
     }
-}
 #else
-extension Product: Hash.`Protocol` where repeat each Element: Swift.Hashable {}
+    extension Product: Hash.`Protocol` where repeat each Element: Swift.Hashable {}
 #endif

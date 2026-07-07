@@ -16,5 +16,5 @@
             }
         }
     }
-    // swiftlint:enable no_any_protocol_existential
+// swiftlint:enable no_any_protocol_existential
 #endif
