@@ -34,6 +34,7 @@ let package = Package(
         .testTarget(
             name: "Product Primitives Tests",
             dependencies: [
+                .product(name: "Equation Primitives", package: "swift-equation-primitives"),
                 "Product Primitives",
                 .product(
                     name: "Comparison Primitives Standard Library Integration",
