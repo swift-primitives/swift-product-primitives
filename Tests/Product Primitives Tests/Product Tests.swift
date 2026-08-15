@@ -358,7 +358,9 @@ extension `Product Tests`.Unit.Bitwise {
     func `MemoryLayout matches the underlying tuple`() {
         #expect(MemoryLayout<Product<Int, Int, Int>>.size == MemoryLayout<(Int, Int, Int)>.size)
         #expect(MemoryLayout<Product<Int, Int, Int>>.stride == MemoryLayout<(Int, Int, Int)>.stride)
-        #expect(MemoryLayout<Product<Int, Double, Bool>>.size == MemoryLayout<(Int, Double, Bool)>.size)
+        #expect(
+            MemoryLayout<Product<Int, Double, Bool>>.size == MemoryLayout<(Int, Double, Bool)>.size
+        )
         #expect(MemoryLayout<Product<Int>>.size == MemoryLayout<Int>.size)
     }
 
