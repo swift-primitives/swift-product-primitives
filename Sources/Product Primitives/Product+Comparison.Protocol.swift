@@ -1,20 +1,12 @@
 // Product+Comparison.Protocol.swift
 // Conformance of Product to Comparison.Protocol — unconditional.
 //
-// On Swift <6.4, `Comparison.Protocol` is the institute fork supporting
-// `borrowing` parameters. On Swift 6.4+, it is a typealias to
-// `Swift.Comparable` per SE-0499 — this same extension then satisfies the
-// stdlib conformance directly. The stdlib `Product: Comparable` extension
-// in `Product+Comparable.swift` is therefore guarded `#if swift(<6.4)` to
-// avoid duplicate-conformance.
+// `Comparison.Protocol` aliases `Swift.Comparable`, so this extension also
+// supplies the standard-library conformance.
 
 extension Product: Comparison.`Protocol` where repeat each Element: Comparison.`Protocol` {
     /// Returns `true` when `lhs` precedes `rhs` lexicographically over the
     /// pack of components.
-    ///
-    /// On Swift <6.4 this provides the borrowing-parameter `<` for the
-    /// institute fork; on Swift 6.4+ it provides the stdlib `Comparable`
-    /// conformance directly via the SE-0499 typealias.
     @inlinable
     @_disfavoredOverload
     public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
