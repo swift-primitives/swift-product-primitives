@@ -1,12 +1,5 @@
-// Product+Comparison.Protocol.swift
-// Conformance of Product to Comparison.Protocol — unconditional.
-//
-// `Comparison.Protocol` aliases `Swift.Comparable`, so this extension also
-// supplies the standard-library conformance.
-
 extension Product: Comparison.`Protocol` where repeat each Element: Comparison.`Protocol` {
-    /// Returns `true` when `lhs` precedes `rhs` lexicographically over the
-    /// pack of components.
+
     @inlinable
     @_disfavoredOverload
     public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {

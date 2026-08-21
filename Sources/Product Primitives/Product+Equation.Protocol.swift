@@ -1,11 +1,5 @@
-// Product+Equation.Protocol.swift
-// Conformance of Product to Equation.Protocol — unconditional.
-
-// `Equation.Protocol` aliases `Swift.Equatable`, so this extension also
-// supplies the standard-library conformance.
-
 extension Product: Equation.`Protocol` where repeat each Element: Equation.`Protocol` {
-    /// Returns `true` when both products' components are pair-wise equal.
+
     @inlinable
     @_disfavoredOverload
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {

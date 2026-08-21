@@ -6,8 +6,6 @@ import Hash_Primitives_Standard_Library_Integration
 import Product_Primitives
 import Testing
 
-// MARK: - Suite Structure
-
 @Suite
 struct `Product Tests` {
     @Suite struct Unit {}
@@ -29,8 +27,6 @@ extension `Product Tests`.Unit {
     @Suite struct Bitwise {}
 }
 
-// MARK: - Construction
-
 extension `Product Tests`.Unit.Construction {
 
     @Test
@@ -48,8 +44,6 @@ extension `Product Tests`.Unit.Construction {
         #expect(triple.2 == true)
     }
 }
-
-// MARK: - Conformances
 
 extension `Product Tests`.Unit.Conformances {
 
@@ -103,8 +97,6 @@ extension `Product Tests`.Unit.Conformances {
         _ = asError
     }
 }
-
-// MARK: - Map (n-ary instance)
 
 extension `Product Tests`.Unit.Map {
 
@@ -168,8 +160,6 @@ extension `Product Tests`.Unit.Map {
     }
 }
 
-// MARK: - Append / Prepend
-
 extension `Product Tests`.Unit.Append {
 
     @Test
@@ -199,8 +189,6 @@ extension `Product Tests`.Unit.Append {
     }
 }
 
-// MARK: - Zip
-
 extension `Product Tests`.Unit.Zip {
 
     @Test
@@ -228,8 +216,6 @@ extension `Product Tests`.Unit.Zip {
     }
 }
 
-// MARK: - Fold
-
 extension `Product Tests`.Unit.Fold {
 
     @Test
@@ -250,10 +236,9 @@ extension `Product Tests`.Unit.Fold {
     func `fold propagates typed throws`() {
         struct Boom: Swift.Error, Equatable {}
         let pair = Product(1, 2)
-        // Parens around `(_, _)` are syntactically required for the typed-throws
-        // closure annotation; the rule does not yet model `throws(E)`.
+
         do throws(Boom) {
-            // swiftlint:disable:next unneeded_parentheses_in_closure_argument
+
             _ = try pair.fold { (_, _) throws(Boom) -> Int in throw Boom() }
             Issue.record("expected throw")
         } catch {
@@ -261,8 +246,6 @@ extension `Product Tests`.Unit.Fold {
         }
     }
 }
-
-// MARK: - Swap
 
 extension `Product Tests`.Unit.Swap {
 
@@ -283,15 +266,8 @@ extension `Product Tests`.Unit.Swap {
     }
 }
 
-// MARK: - Codable
-
 extension `Product Tests`.Unit.Codable {
 
-    /// Compile-time conformance witnesses for Product Codable conformance.
-    ///
-    /// Round-trip would require a Foundation-free encoder/decoder per
-    /// `[PRIM-FOUND-001]`. The synthesized pack-iterating bodies are mechanical
-    /// and the conformance witness is the load-bearing claim.
     @Test
     func `Product is Codable when each element is Codable`() {
         func _requireCodable<T: Codable>(_: T.Type) {}
@@ -300,8 +276,6 @@ extension `Product Tests`.Unit.Codable {
         _requireCodable(Product<Double>.self)
     }
 }
-
-// MARK: - Institute Primitive Protocols (Equation / Hash / Comparison)
 
 extension `Product Tests`.Unit.Institute {
 
@@ -337,12 +311,8 @@ extension `Product Tests`.Unit.Institute {
     }
 }
 
-// MARK: - BitwiseCopyable
-
 extension `Product Tests`.Unit.Bitwise {
 
-    /// Static witness: parameter-pack conditional conformance fires for
-    /// all-BitwiseCopyable element packs.
     @Test
     func `Product is BitwiseCopyable when each element is BitwiseCopyable`() {
         func requires<T: BitwiseCopyable>(_: T.Type) {}
@@ -352,8 +322,6 @@ extension `Product Tests`.Unit.Bitwise {
         requires(Product<Int, Double, Bool>.self)
     }
 
-    /// Layout parity with the underlying tuple: BitwiseCopyable is sound
-    /// only if Product has no extra storage beyond `values`.
     @Test
     func `MemoryLayout matches the underlying tuple`() {
         #expect(MemoryLayout<Product<Int, Int, Int>>.size == MemoryLayout<(Int, Int, Int)>.size)
@@ -364,8 +332,6 @@ extension `Product Tests`.Unit.Bitwise {
         #expect(MemoryLayout<Product<Int>>.size == MemoryLayout<Int>.size)
     }
 
-    /// Smoke test: an `InlineArray` of `Product` requires `BitwiseCopyable`,
-    /// so this only typechecks if the conformance fires.
     @Test
     func `InlineArray of Product is constructible`() {
         let triple = Product(1, 2, 3)
