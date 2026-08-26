@@ -1,4 +1,4 @@
-# Product Primitives
+# Product
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -11,7 +11,7 @@ Conditionally `Sendable` / `Equatable` / `Hashable` / `Comparable` / `CustomStri
 ## Quick Start
 
 ```swift
-import Product_Primitives
+import Product
 
 let pair = Product(1, "hello")           // Product<Int, String>
 let triple = Product(1, "hello", true)   // Product<Int, String, Bool>
@@ -91,7 +91,7 @@ in arity-2 use `Pair`.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-product-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-product.git", branch: "main")
 ]
 ```
 
@@ -99,7 +99,7 @@ dependencies: [
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Product Primitives", package: "swift-product-primitives"),
+        .product(name: "Product", package: "swift-product"),
     ]
 )
 ```
@@ -114,11 +114,11 @@ One library product, one target.
 
 | Product | Target | Contents |
 |---------|--------|----------|
-| `Product Primitives` | `Sources/Product Primitives/` | `Product<each Element>` (variadic over parameter packs) + dynamic-member-lookup subscript + `map` / `append` / `prepend` / `zip` / `fold` instance methods + free `swapped(_:)` for n=2 + conditional `Sendable` / `Equatable` / `Hashable` / `Comparable` / `CustomStringConvertible` / `Encodable` / `Decodable` / `Swift.Error` conformances. |
+| `Product` | `Sources/Product/` | `Product<each Element>` (variadic over parameter packs) + dynamic-member-lookup subscript + `map` / `append` / `prepend` / `zip` / `fold` instance methods + free `swapped(_:)` for n=2 + conditional `Sendable` / `Equatable` / `Hashable` / `Comparable` / `CustomStringConvertible` / `Encodable` / `Decodable` / `Swift.Error` conformances. |
 
 Conditional `Equation.Protocol`, `Hash.Protocol`, and `Comparison.Protocol` conformances are gated `#if swift(<6.4)` per SE-0499; under Swift 6.4+, those institute protocols are typealiases to the stdlib counterparts and the existing stdlib conformances satisfy them automatically.
 
-Dependencies: `swift-comparison-primitives`, `swift-equation-primitives`, `swift-hash-primitives`. Foundation-free.
+Dependencies: `swift-comparison`, `swift-equation`, `swift-hash`. Foundation-free.
 
 ---
 

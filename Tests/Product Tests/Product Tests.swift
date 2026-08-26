@@ -1,9 +1,9 @@
-import Comparison_Primitives
-import Equation_Primitives
-import Equation_Primitives_Standard_Library_Integration
-import Hash_Primitives
-import Hash_Primitives_Standard_Library_Integration
-import Product_Primitives
+import Comparison
+import Equation
+import Equation_Standard_Library_Integration
+import Hash
+import Hash_Standard_Library_Integration
+import Product
 import Testing
 
 @Suite
