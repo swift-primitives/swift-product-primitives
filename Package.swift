@@ -44,7 +44,10 @@ let package = Package(
         ),
         .testTarget(
             name: "Product Tests",
-            dependencies: ["Product"],
+            dependencies: [
+                "Product",
+                "Product Standard Library Integration",
+            ],
             path: "Tests/Product Tests"
         ),
     ],
