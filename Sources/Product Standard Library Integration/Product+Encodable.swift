@@ -1,3 +1,5 @@
+public import Product
+
 #if !hasFeature(Embedded)
 
     extension Product: Encodable where repeat each Element: Encodable {

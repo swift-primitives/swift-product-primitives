@@ -1,3 +1,5 @@
+public import Product
+
 extension Product: Swift.Hashable where repeat each Element: Swift.Hashable {
 
     @inlinable
