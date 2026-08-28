@@ -1,5 +1,3 @@
-public import Product
-
 #if !hasFeature(Embedded)
 
     extension Product: Decodable where repeat each Element: Decodable {

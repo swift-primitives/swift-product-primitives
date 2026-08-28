@@ -1,5 +1,3 @@
-public import Product
-
 extension Product: CustomStringConvertible
 where repeat each Element: CustomStringConvertible {
 

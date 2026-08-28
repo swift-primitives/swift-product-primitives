@@ -1,5 +1,9 @@
+import Comparison
+import Equation
+import Equation_Standard_Library_Integration
+import Hash
+import Hash_Standard_Library_Integration
 import Product
-import Product_Standard_Library_Integration
 import Testing
 
 @Suite
@@ -19,6 +23,7 @@ extension `Product Tests`.Unit {
     @Suite struct Fold {}
     @Suite struct Swap {}
     @Suite struct Codable {}
+    @Suite struct Institute {}
     @Suite struct Bitwise {}
 }
 
@@ -269,6 +274,40 @@ extension `Product Tests`.Unit.Codable {
         _requireCodable(Product<Int, String>.self)
         _requireCodable(Product<Int, String, Bool>.self)
         _requireCodable(Product<Double>.self)
+    }
+}
+
+extension `Product Tests`.Unit.Institute {
+
+    @Test
+    func `conforms to Equation_Protocol when each element does`() {
+        func eq<T: Equation.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a == b }
+        let a = Product(1, "x")
+        let b = Product(1, "x")
+        let c = Product(1, "y")
+        #expect(eq(a, b))
+        #expect(!eq(a, c))
+    }
+
+    @Test
+    func `conforms to Hash_Protocol when each element does`() {
+        func hashed<T: Hash.`Protocol`>(_ x: borrowing T) -> Int {
+            var hasher = Hasher()
+            x.hash(into: &hasher)
+            return hasher.finalize()
+        }
+        let a = Product(1, "x", true)
+        let b = Product(1, "x", true)
+        #expect(hashed(a) == hashed(b))
+    }
+
+    @Test
+    func `conforms to Comparison_Protocol when each element does`() {
+        func less<T: Comparison.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a < b }
+        let a = Product(1, 2, 0)
+        let b = Product(1, 3, 0)
+        #expect(less(a, b))
+        #expect(!less(b, a))
     }
 }
 

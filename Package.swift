@@ -15,40 +15,49 @@ let package = Package(
         .library(
             name: "Product",
             targets: ["Product"]
+        )
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/swift-molecules/swift-comparison.git",
+            branch: "main"
         ),
-        .library(
-            name: "Product Standard Library Integration",
-            targets: ["Product Standard Library Integration"]
+        .package(
+            url: "https://github.com/swift-molecules/swift-equation.git",
+            branch: "main"
         ),
-        .library(
-            name: "Product Apple Foundation Integration",
-            targets: ["Product Apple Foundation Integration"]
+        .package(
+            url: "https://github.com/swift-molecules/swift-hash.git",
+            branch: "main"
         ),
     ],
-    dependencies: [],
     targets: [
         .target(
             name: "Product",
-            dependencies: []
-        ),
-        .target(
-            name: "Product Standard Library Integration",
-            dependencies: ["Product"]
-        ),
-        .target(
-            name: "Product Apple Foundation Integration",
             dependencies: [
-                "Product",
-                "Product Standard Library Integration",
+                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Equation", package: "swift-equation"),
+                .product(name: "Hash", package: "swift-hash"),
             ]
         ),
         .testTarget(
             name: "Product Tests",
             dependencies: [
+                .product(name: "Equation", package: "swift-equation"),
                 "Product",
-                "Product Standard Library Integration",
-            ],
-            path: "Tests/Product Tests"
+                .product(
+                    name: "Comparison Standard Library Integration",
+                    package: "swift-comparison"
+                ),
+                .product(
+                    name: "Equation Standard Library Integration",
+                    package: "swift-equation"
+                ),
+                .product(
+                    name: "Hash Standard Library Integration",
+                    package: "swift-hash"
+                ),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
