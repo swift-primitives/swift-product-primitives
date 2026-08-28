@@ -56,7 +56,8 @@ let package = Package(
                     name: "Hash Standard Library Integration",
                     package: "swift-hash"
                 ),
-            ]
+            ],
+            resources: [.copy("Fixtures")]
         ),
     ],
     swiftLanguageModes: [.v6]
@@ -70,6 +71,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
+        .enableExperimentalFeature("MoveOnlyTuples"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
 

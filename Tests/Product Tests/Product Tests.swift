@@ -4,6 +4,9 @@ import Hash_Standard_Library_Integration
 import Product
 import Testing
 
+private func requireCopyable<Value: Copyable>(_: Value) {}
+private func requireEscapable<Value: Escapable>(_: Value) {}
+
 @Suite
 struct `Product Tests` {
     @Suite struct Unit {}
@@ -28,6 +31,13 @@ extension `Product Tests`.Unit {
 extension `Product Tests`.Unit.Construction {
 
     @Test
+    func `nullary product has one empty coordinate family`() {
+        let product = Product()
+
+        #expect(MemoryLayout.size(ofValue: product) == 0)
+    }
+
+    @Test
     func `init holds component values`() {
         let pair = Product(1, "hello")
         #expect(pair.values.0 == 1)
@@ -40,6 +50,34 @@ extension `Product Tests`.Unit.Construction {
         #expect(triple.0 == 1)
         #expect(triple.1 == "hello")
         #expect(triple.2 == true)
+    }
+
+    @Test
+    func `dynamic positional projection reads and writes`() {
+        var triple = Product(1, "hello", true)
+
+        triple.0 = 2
+
+        #expect(triple.0 == 2)
+        #expect(triple.values.0 == 2)
+    }
+
+    @Test
+    func `unary and binary products preserve their arity`() {
+        let unary = Product(1)
+        let binary = Product(1, "two")
+
+        #expect(unary.values == 1)
+        #expect(binary.values.0 == 1)
+        #expect(binary.values.1 == "two")
+    }
+
+    @Test
+    func `compiler-admitted element capabilities are preserved`() {
+        let product = Product(1, "two", true)
+
+        requireCopyable(product)
+        requireEscapable(product)
     }
 }
 
