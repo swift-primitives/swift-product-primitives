@@ -1,1 +1,1 @@
-extension Product: Hash.`Protocol` where repeat each Element: Swift.Hashable {}
+extension Product: Hash::Hash.`Protocol` where repeat each Element: Swift.Hashable {}

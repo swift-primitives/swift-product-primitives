@@ -91,7 +91,7 @@ in arity-2 use `Pair`.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-product.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-product.git", branch: "main")
 ]
 ```
 

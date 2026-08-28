@@ -19,15 +19,15 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-comparison.git",
+            url: "https://github.com/swift-atoms/swift-comparison.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-equation.git",
+            url: "https://github.com/swift-atoms/swift-equation.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-hash.git",
+            url: "https://github.com/swift-atoms/swift-hash.git",
             branch: "main"
         ),
     ],
@@ -35,16 +35,15 @@ let package = Package(
         .target(
             name: "Product",
             dependencies: [
-                .product(name: "Comparison", package: "swift-comparison"),
-                .product(name: "Equation", package: "swift-equation"),
-                .product(name: "Hash", package: "swift-hash"),
+                .product(name: "Comparison Protocol", package: "swift-comparison"),
+                .product(name: "Equation Protocol", package: "swift-equation"),
+                .product(name: "Hash Protocol", package: "swift-hash"),
             ]
         ),
         .testTarget(
             name: "Product Tests",
             dependencies: [
-                .product(name: "Equation", package: "swift-equation"),
-                "Product",
+                .target(name: "Product"),
                 .product(
                     name: "Comparison Standard Library Integration",
                     package: "swift-comparison"
@@ -57,7 +56,8 @@ let package = Package(
                     name: "Hash Standard Library Integration",
                     package: "swift-hash"
                 ),
-            ]
+            ],
+            resources: [.copy("Fixtures")]
         ),
     ],
     swiftLanguageModes: [.v6]
@@ -71,6 +71,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
+        .enableExperimentalFeature("MoveOnlyTuples"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
 

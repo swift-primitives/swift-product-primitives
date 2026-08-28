@@ -1,10 +1,11 @@
-import Comparison
-import Equation
 import Equation_Standard_Library_Integration
-import Hash
+import Comparison_Standard_Library_Integration
 import Hash_Standard_Library_Integration
 import Product
 import Testing
+
+private func requireCopyable<Value: Copyable>(_: Value) {}
+private func requireEscapable<Value: Escapable>(_: Value) {}
 
 @Suite
 struct `Product Tests` {
@@ -30,6 +31,13 @@ extension `Product Tests`.Unit {
 extension `Product Tests`.Unit.Construction {
 
     @Test
+    func `nullary product has one empty coordinate family`() {
+        let product = Product()
+
+        #expect(MemoryLayout.size(ofValue: product) == 0)
+    }
+
+    @Test
     func `init holds component values`() {
         let pair = Product(1, "hello")
         #expect(pair.values.0 == 1)
@@ -42,6 +50,34 @@ extension `Product Tests`.Unit.Construction {
         #expect(triple.0 == 1)
         #expect(triple.1 == "hello")
         #expect(triple.2 == true)
+    }
+
+    @Test
+    func `dynamic positional projection reads and writes`() {
+        var triple = Product(1, "hello", true)
+
+        triple.0 = 2
+
+        #expect(triple.0 == 2)
+        #expect(triple.values.0 == 2)
+    }
+
+    @Test
+    func `unary and binary products preserve their arity`() {
+        let unary = Product(1)
+        let binary = Product(1, "two")
+
+        #expect(unary.values == 1)
+        #expect(binary.values.0 == 1)
+        #expect(binary.values.1 == "two")
+    }
+
+    @Test
+    func `compiler-admitted element capabilities are preserved`() {
+        let product = Product(1, "two", true)
+
+        requireCopyable(product)
+        requireEscapable(product)
     }
 }
 
@@ -281,7 +317,9 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Equation_Protocol when each element does`() {
-        func eq<T: Equation.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a == b }
+        func eq<T: Equation::Equation.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool {
+            a == b
+        }
         let a = Product(1, "x")
         let b = Product(1, "x")
         let c = Product(1, "y")
@@ -291,7 +329,7 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Hash_Protocol when each element does`() {
-        func hashed<T: Hash.`Protocol`>(_ x: borrowing T) -> Int {
+        func hashed<T: Hash::Hash.`Protocol`>(_ x: borrowing T) -> Int {
             var hasher = Hasher()
             x.hash(into: &hasher)
             return hasher.finalize()
@@ -303,7 +341,10 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Comparison_Protocol when each element does`() {
-        func less<T: Comparison.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a < b }
+        func less<T: Comparison::Comparison.`Protocol`>(
+            _ a: borrowing T,
+            _ b: borrowing T
+        ) -> Bool { a < b }
         let a = Product(1, 2, 0)
         let b = Product(1, 3, 0)
         #expect(less(a, b))
