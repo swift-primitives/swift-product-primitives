@@ -1,9 +1,7 @@
-import Comparison_Primitives
-import Equation_Primitives
-import Equation_Primitives_Standard_Library_Integration
-import Hash_Primitives
-import Hash_Primitives_Standard_Library_Integration
-import Product_Primitives
+import Equation_Standard_Library_Integration
+import Comparison_Standard_Library_Integration
+import Hash_Standard_Library_Integration
+import Product
 import Testing
 
 @Suite
@@ -281,7 +279,9 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Equation_Protocol when each element does`() {
-        func eq<T: Equation.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a == b }
+        func eq<T: Equation::Equation.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool {
+            a == b
+        }
         let a = Product(1, "x")
         let b = Product(1, "x")
         let c = Product(1, "y")
@@ -291,7 +291,7 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Hash_Protocol when each element does`() {
-        func hashed<T: Hash.`Protocol`>(_ x: borrowing T) -> Int {
+        func hashed<T: Hash::Hash.`Protocol`>(_ x: borrowing T) -> Int {
             var hasher = Hasher()
             x.hash(into: &hasher)
             return hasher.finalize()
@@ -303,7 +303,10 @@ extension `Product Tests`.Unit.Institute {
 
     @Test
     func `conforms to Comparison_Protocol when each element does`() {
-        func less<T: Comparison.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Bool { a < b }
+        func less<T: Comparison::Comparison.`Protocol`>(
+            _ a: borrowing T,
+            _ b: borrowing T
+        ) -> Bool { a < b }
         let a = Product(1, 2, 0)
         let b = Product(1, 3, 0)
         #expect(less(a, b))

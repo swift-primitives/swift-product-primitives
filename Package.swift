@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-product-primitives",
+    name: "swift-product",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,49 +13,48 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Product Primitives",
-            targets: ["Product Primitives"]
+            name: "Product",
+            targets: ["Product"]
         )
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-comparison-primitives.git",
+            url: "https://github.com/swift-atoms/swift-comparison.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-equation-primitives.git",
+            url: "https://github.com/swift-atoms/swift-equation.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-hash-primitives.git",
+            url: "https://github.com/swift-atoms/swift-hash.git",
             branch: "main"
         ),
     ],
     targets: [
         .target(
-            name: "Product Primitives",
+            name: "Product",
             dependencies: [
-                .product(name: "Comparison Primitives", package: "swift-comparison-primitives"),
-                .product(name: "Equation Primitives", package: "swift-equation-primitives"),
-                .product(name: "Hash Primitives", package: "swift-hash-primitives"),
+                .product(name: "Comparison Protocol", package: "swift-comparison"),
+                .product(name: "Equation Protocol", package: "swift-equation"),
+                .product(name: "Hash Protocol", package: "swift-hash"),
             ]
         ),
         .testTarget(
-            name: "Product Primitives Tests",
+            name: "Product Tests",
             dependencies: [
-                .product(name: "Equation Primitives", package: "swift-equation-primitives"),
-                "Product Primitives",
+                .target(name: "Product"),
                 .product(
-                    name: "Comparison Primitives Standard Library Integration",
-                    package: "swift-comparison-primitives"
+                    name: "Comparison Standard Library Integration",
+                    package: "swift-comparison"
                 ),
                 .product(
-                    name: "Equation Primitives Standard Library Integration",
-                    package: "swift-equation-primitives"
+                    name: "Equation Standard Library Integration",
+                    package: "swift-equation"
                 ),
                 .product(
-                    name: "Hash Primitives Standard Library Integration",
-                    package: "swift-hash-primitives"
+                    name: "Hash Standard Library Integration",
+                    package: "swift-hash"
                 ),
             ]
         ),

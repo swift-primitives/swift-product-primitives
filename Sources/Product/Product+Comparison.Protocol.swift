@@ -1,9 +1,13 @@
-extension Product: Comparison.`Protocol` where repeat each Element: Comparison.`Protocol` {
+extension Product: Comparison::Comparison.`Protocol`
+where repeat each Element: Comparison::Comparison.`Protocol` {
 
     @inlinable
     @_disfavoredOverload
     public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        func cmp<T: Comparison.`Protocol`>(_ a: borrowing T, _ b: borrowing T) -> Comparison {
+        func cmp<T: Comparison::Comparison.`Protocol`>(
+            _ a: borrowing T,
+            _ b: borrowing T
+        ) -> Comparison::Comparison {
             if a < b { return .less }
             if a > b { return .greater }
             return .equal
